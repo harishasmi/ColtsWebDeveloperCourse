@@ -98,7 +98,7 @@ heroku logs     -- Gives you the reason for failure if any. Here there is no sta
         "start": "node app.js"
     }
     
-    Need to run git status, git add package.json, git commit -m "Add Startup Script in Package Json file"
+Need to run git status, git add package.json, git commit -m "Add Startup Script in Package Json file" again.
     
 git push heroku master
 
@@ -137,4 +137,4 @@ Environment variables :
 
 export DATABASEURL=mongodb://localhost/yelp-camp  in terminal of your local machine
 
-In heroku, click on settings for the app and set the environment variable as a key value pair
+In heroku, click on settings for the app and set the environment variable as a key value pair in the "Config Vars"
