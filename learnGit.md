@@ -131,3 +131,10 @@ Create a user (Developer User Account) to the database in order for the connecti
 Replce the dbuser and dbpassword into the url provided by mongolab in your application
 
 Then deploy to heroku. Git add,commit and push
+
+
+Environment variables :
+
+export DATABASEURL=mongodb://localhost/yelp-camp  in terminal of your local machine
+
+In heroku, click on settings for the app and set the environment variable as a key value pair

@@ -36,8 +36,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 
 
+//console.log(process.env.DATABASEURL);
+
 /*Database Connections*/
-mongoose.connect("mongodb://localhost/yelp-camp");
+mongoose.connect(process.env.DATABASEURL);
+
 
 /*Seeding the DB file*/
 //var SeedDb = require("./seeds");
