@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/user")
 var passport = require("passport");
+var flash = require("connect-flash");
 
 /*Routes*/
 router.get("/",function(req,res){
@@ -24,10 +25,16 @@ router.post("/register", function(req, res) {
     // This method won't allow you to register an already registered user
     User.register(newUser, req.body.password, function(err, user){
         if(err){
-            console.log(err);
-            return res.render("register");  // Shortcircut everything
+            // console.log(err);      // 'err' is an object that is getting from database.
+            // Always have the flash message just before redirect.
+            // And console log apparently clears the flas. Who would have thought about that.
+            // Refer http://stackoverflow.com/questions/41558884/node-connect-flash-not-working-on-redirect  Not helping
+            req.flash("error", err.message);   // Error occurs when the user is taken, password is empty etc.
+            return res.redirect("/register");  // Shortcircut everything. Else the below code would run as well and that would throw an error
+            // Apparently res.render("register") didn't work with flash. But res.redirect("/register") worked. Yay !!
         }
         passport.authenticate("local")(req, res, function(){
+            req.flash("success", "Welcome to Yelp Camp " + user.username); // 'user' is coming from database
             res.redirect("/campgrounds");
         })
     });
@@ -50,15 +57,9 @@ router.post("/login", passport.authenticate("local",
 // Logout Routes
 router.get("/logout", function(req, res) {
    req.logout(); 
+   req.flash("success","Logged you out");
    res.redirect("/campgrounds");
 });
 
-// Middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;

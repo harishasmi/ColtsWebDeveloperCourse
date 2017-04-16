@@ -1,7 +1,7 @@
 // All the middleware
 var Campground = require("../models/campground");
 var Comment = require("../models/comment");
-
+var flash = require("connect-flash");
 var middlewareObj = {};
 
 
@@ -10,6 +10,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, function(err, foundCampground){
             if(err){
+                req.flash("error","Campground not found");   // They can added anywhere before a redirect
                 res.redirect("back");  // res.redirect("/campgrounds");
             }else{
                 // does the user owns the campground. The author id of the campground matches the current user id ?
@@ -19,12 +20,14 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
                     // res.render("campgrounds/edit", {campground : foundCampground});    
                     next();  // Instead of showing the edit campground page, we are moving to next
                 }else{
+                    req.flash("error","You don't have permisssions to edit this campground");
                     res.redirect("back");  //res.send("You don't have permisssion to edit this home page")
                 } 
             }
         });
         
     }else{
+        req.flash("error","You need to be logged into to do that");
         res.redirect("back");  // Redirect to the previous page
         //res.send("You need to be logged in to edit the campground");
     }
@@ -43,12 +46,14 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
                 if(foundComment.author.id.equals(req.user._id)){
                     next();  
                 }else{
+                    req.flash("error","You don't have permission to do that");
                     res.redirect("back");  //res.send("You don't have permisssion to edit this home page")
                 } 
             }
         });
         
     }else{
+        req.flash("error","You need to be logged in");
         res.redirect("back");  // Redirect to the previous page
         //res.send("You need to be logged in to edit the campground");
     }
@@ -58,6 +63,9 @@ middlewareObj.isLoggedIn = function (req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
+    req.flash("error", "Please Login First!");  //  This should be present before the redirection. Else won't work
+    // Pass this object { message : req.flash("success") } to res redirect.        
+    // This would be displayed in the next page 
     res.redirect("/login");
 }
 

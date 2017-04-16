@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 mongoose.Promise = require('bluebird');
+var flash = require("connect-flash");
 var methodOverride = require("method-override");
 
 var passport = require("passport");
@@ -21,6 +22,8 @@ app.use(express.static(__dirname + "/public"));
 
 /* Set method override*/
 app.use(methodOverride("_method"));
+/* Set Flash */
+app.use(flash());
 
 /*Models*/
 var User = require("./models/user");
@@ -40,12 +43,16 @@ mongoose.connect("mongodb://localhost/yelp-camp");
 //var SeedDb = require("./seeds");
 //SeedDb();
 
+
+
 // Passport configuration
 app.use(require("express-session")({
     secret : "Something secret",
     resave : false,
     saveUninitialized : false
 }));
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 // The methods are available in the passport-local-mongoose library
@@ -55,8 +62,11 @@ passport.deserializeUser(User.deserializeUser());
 
 /* Define your own middleware which would run for all the routes*/
 /* In this case, the currentuser would be present for every route */
+/* Use it after the session configuration */
 app.use(function(req, res , next){
-   res.locals.currentUser = req.user;   // user = {username : xxxx,  _id : xxxx}
+   res.locals.currentUser = req.user;   // user = {username : xxxx,  _id : xxxx} // User would be available for all routes
+   res.locals.error = req.flash("error");  
+   res.locals.success = req.flash("success");  // Both of these variables would be empty most of the times
    next();
 });
 
