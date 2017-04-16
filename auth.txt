@@ -1,0 +1,15 @@
+Part 1:
+.Install all the packages
+
+Part 2:  Register
+.Configure Passport
+.Add register routes
+.Add register templates
+
+Part 3: Login
+.Add login Routes
+.Add login templates
+
+
+Part 4: Logout
+.Add logout route
