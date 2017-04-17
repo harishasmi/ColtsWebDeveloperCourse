@@ -15,3 +15,5 @@ Steps to run the project :
     Profit (?)
     
 *You need to have an instance of mongodb running as a service in your desktop.
+
+Note : Looks like the app is available in https://intense-bastion-42068.herokuapp.com

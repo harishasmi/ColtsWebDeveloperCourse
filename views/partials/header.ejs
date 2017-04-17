@@ -28,7 +28,6 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li><a href="/campgrounds">Campgrounds</a></li>
-            <li><a href="/campgrounds/new">New</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <% if(!currentUser) { %>
@@ -44,7 +43,7 @@
     </nav>
     <div class="container">
       <% if(error && error.length > 0){  %>   <!--To prevent error when error is undefined.   undefined.length gives error --> 
-        <div class="alert alert-danger" role="alert">    <!-- if([]) this return true . But why ? -->
+        <div class="alert alert-danger" role="alert">    <!-- if([]) => returns true . But why ? -->
           <%= error %>
         </div>
       <% } %>

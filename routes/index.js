@@ -27,11 +27,12 @@ router.post("/register", function(req, res) {
         if(err){
             // console.log(err);      // 'err' is an object that is getting from database.
             // Always have the flash message just before redirect.
-            // And console log apparently clears the flas. Who would have thought about that.
+            // And console log apparently clears the flash. Who would have thought about that.
             // Refer http://stackoverflow.com/questions/41558884/node-connect-flash-not-working-on-redirect  Not helping
+            
+            // Apparently res.render("register") didn't work with flash. But res.redirect("/register") worked. Yay !!
             req.flash("error", err.message);   // Error occurs when the user is taken, password is empty etc.
             return res.redirect("/register");  // Shortcircut everything. Else the below code would run as well and that would throw an error
-            // Apparently res.render("register") didn't work with flash. But res.redirect("/register") worked. Yay !!
         }
         passport.authenticate("local")(req, res, function(){
             req.flash("success", "Welcome to Yelp Camp " + user.username); // 'user' is coming from database

@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 
 
-//console.log(process.env.DATABASEURL);
+console.log(process.env.DATABASEURL);
 
 /*Database Connections*/
 mongoose.connect(process.env.DATABASEURL);
